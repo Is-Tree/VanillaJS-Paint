@@ -1,4 +1,9 @@
-const canvas = document.querySelector(".canvas");
+const canvas = document.querySelector(".canvas"),
+    ctx = canvas.getContext("2d");
+
+canvas.width = 500;
+canvas.height = 500;
+ctx.lineWidth = 2.5;
 
 let mouse = false;
 
@@ -6,34 +11,35 @@ function onMouseMove(event)
 {
     const x = event.offsetX,
         y = event.offsetY;
-    console.log(event);
-    console.log(x, y);
+
+    if(!mouse)
+    {
+        ctx.beginPath();
+        ctx.moveTo(x, y);
+    }
+    else
+    {
+        ctx.lineTo(x, y);
+        ctx.stroke();
+    }
 }
 
-function onMouseDown(event)
+function startPainting()
 {
-    console.log(event);
     mouse = true;
 }
 
-function onMouseUp(event)
+function stopPainting()
 {
-    console.log(event);
-    mouse = false;
-}
-
-function onMouseLeave(event)
-{
-    console.log(event);
     mouse = false;
 }
 
 function init()
 {
     canvas.addEventListener("mousemove", onMouseMove);
-    canvas.addEventListener("mousedown", onMouseDown);
-    canvas.addEventListener("mousedown", onMouseUp);
-    canvas.addEventListener("mouseleave", onMouseLeave);
+    canvas.addEventListener("mousedown", startPainting);
+    canvas.addEventListener("mouseup", stopPainting);
+    canvas.addEventListener("mouseleave", stopPainting);
 }
 
 init()
